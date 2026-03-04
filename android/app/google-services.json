@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "912160118580",
+    "project_id": "dentalflow-8590e",
+    "storage_bucket": "dentalflow-8590e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:912160118580:android:226106a60cca0964aaf761",
+        "android_client_info": {
+          "package_name": "com.example.dentalflow"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCAm7OISys8w7tRDErKl7h9QZ13izwpKEU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
