@@ -1,18 +1,50 @@
-# dentalflow
+# DentalFlow 🦷
 
 Plataforma móvil para la gestión y trazabilidad de trabajos protésicos 
 entre clínicas dentales y laboratorios.
 
-## Getting Started
+## ¿Qué problema resuelve?
 
-This project is a starting point for a Flutter application.
+La comunicación entre clínicas dentales y laboratorios protésicos 
+sigue dependiendo de WhatsApp, llamadas y anotaciones en papel. 
+Esto genera pérdida de información, incumplimientos del RGPD y 
+errores de coordinación que afectan directamente a los pacientes.
 
-A few resources to get you started if this is your first Flutter project:
+DentalFlow centraliza todo el flujo en una sola app: creación de 
+pedidos, seguimiento de estados en tiempo real, gestión de imágenes 
+clínicas y control de acceso por roles.
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+## Stack tecnológico
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- **Frontend:** Flutter (Dart) — Android e iOS desde un único código
+- **Base de datos:** Cloud Firestore (NoSQL, sincronización en tiempo real)
+- **Autenticación:** Firebase Authentication (tokens criptográficos)
+- **Almacenamiento:** Firebase Cloud Storage (imágenes clínicas)
+- **Control de versiones:** Git + GitHub
+
+## Funcionalidades principales (MVP)
+
+- Login con roles diferenciados (Clínica / Laboratorio)
+- Gestión de pedidos con máquina de estados (FSM)
+- Trazabilidad completa de cada transición (quién, cuándo, desde qué rol)
+- Subida de imágenes clínicas vinculadas a cada pedido
+- Aislamiento total de datos entre organizaciones (RBAC)
+- Historial inmutable de pedidos cancelados y rechazados
+
+## Estado del proyecto
+
+| Fase | Estado |
+|------|--------|
+| Análisis y diseño | ✅ Completada |
+| Core Frontend (Login, Registro) | ✅ Completada |
+| Pantallas de gestión de pedidos | 🔄 En desarrollo |
+| Lógica FSM y Security Rules | ⏳ Pendiente |
+| Pruebas e integración | ⏳ Pendiente |
+
+## Contexto académico
+
+Proyecto de fin de grado — Grado Superior en Desarrollo de 
+Aplicaciones Multiplataforma (DAM)  
+Centro: I.E.S San Andrés  
+Tutor: Roberto  
+Autor: Adrián Palomo Faña
