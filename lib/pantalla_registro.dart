@@ -11,12 +11,10 @@ class RegisterScreen extends StatefulWidget {
 class _RegisterScreenState extends State<RegisterScreen> {
   final llaveDelFormulario = GlobalKey<FormState>();
 
-  // Variables de estado con nombres claros
-  String? queSoy; // ¿Clínica o Laboratorio?
-  bool estoyPensando = false; // Para el spinner de carga
-  bool ocultarSecretos = true; // Para ver/ocultar contraseñas
+  String? queSoy;
+  bool estoyPensando = false;
+  bool ocultarSecretos = true;
 
-  // Controladores (nombres cortos)
   final nombreCtrl = TextEditingController();
   final cifCtrl = TextEditingController();
   final direCtrl = TextEditingController();
@@ -28,7 +26,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   void dispose() {
-    // Limpieza al salir
+    // Limpieza
     nombreCtrl.dispose();
     cifCtrl.dispose();
     direCtrl.dispose();
@@ -59,7 +57,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           ),
         ),
       ),
-      // Envolvemos todo en un Form para que la "Llave Maestra" funcione
+
       body: Form(
         key: llaveDelFormulario,
         child: SingleChildScrollView(
