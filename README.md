@@ -1,6 +1,7 @@
 # dentalflow
 
-A new Flutter project.
+Plataforma móvil para la gestión y trazabilidad de trabajos protésicos 
+entre clínicas dentales y laboratorios.
 
 ## Getting Started
 
