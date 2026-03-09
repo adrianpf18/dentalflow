@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
       title: 'DentalFlow',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.tema,
-      home: const LoginScreen(),
+      home: const PantallaLogin(),
     );
   }
 }

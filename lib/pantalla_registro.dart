@@ -91,13 +91,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
               const SizedBox(height: 32),
 
-              // Solo mostramos el formulario si ya eligió quién es
               if (queSoy != null) ...[
-                // Usamos TextFormField en lugar de TextField para poder validar
+                
                 TextFormField(
                   controller: nombreCtrl,
                   textInputAction:
-                      TextInputAction.next, // Botón "Siguiente" en teclado
+                      TextInputAction.next, 
                   decoration: InputDecoration(
                     labelText: queSoy == 'Clínica'
                         ? 'Nombre de la clínica'
@@ -306,7 +305,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
       // Simulación de envío
       Future.delayed(const Duration(seconds: 2), () {
-        if (!mounted) return; // Seguridad por si cerramos la pantalla antes
+        if (!mounted) return; 
         setState(() => estoyPensando = false);
 
         ScaffoldMessenger.of(context).showSnackBar(
