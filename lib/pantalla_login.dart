@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'app_temas.dart';
 import 'pantalla_registro.dart';
+import 'principal_clinica.dart';
 
 class PantallaLogin extends StatefulWidget {
   const PantallaLogin({super.key});
@@ -16,6 +17,8 @@ class _PantallaLoginState extends State<PantallaLogin> {
 
   final _emailCtrl = TextEditingController();
   final _passCtrl = TextEditingController();
+  
+  bool _ocultarContrasena = true;
 
   @override
   void dispose() {
@@ -25,18 +28,17 @@ class _PantallaLoginState extends State<PantallaLogin> {
   }
 
   void _intentarLogin() {
-    // 1. Validar el formulario (se aplican las reglas definidas en los TextFormField)
+    // 1. Validar el formulario
     if (!_formKey.currentState!.validate()) {
       return;
     }
 
     // 2. Aquí irá la lógica de conexión al backend en el futuro.
-    // Por ahora, se muestra un mensaje indicando que el formulario es válido.
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text("Formulario válido. Listo para conectar al backend."),
-        backgroundColor: Colors.green,
-      ),
+    // Por ahora, simulamos un éxito y redirigimos a la pantalla principal.
+    // pushReplacement destruye la pantalla de login para que no se pueda volver atrás.
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (_) => const PantallaClinica()),
     );
   }
 
@@ -92,10 +94,20 @@ class _PantallaLoginState extends State<PantallaLogin> {
   Widget _construirCampoPassword() {
     return TextFormField(
       controller: _passCtrl,
-      obscureText: true,
-      decoration: const InputDecoration(
+      obscureText: _ocultarContrasena,
+      decoration: InputDecoration(
         labelText: 'Contraseña',
-        prefixIcon: Icon(Icons.lock_outline),
+        prefixIcon: const Icon(Icons.lock_outline),
+        suffixIcon: IconButton(
+          icon: Icon(
+            _ocultarContrasena
+                ? Icons.visibility_outlined
+                : Icons.visibility_off_outlined,
+          ),
+          onPressed: () {
+            setState(() => _ocultarContrasena = !_ocultarContrasena);
+          },
+        ),
       ),
       validator: (valor) {
         if (valor == null || valor.isEmpty) {
@@ -111,12 +123,28 @@ class _PantallaLoginState extends State<PantallaLogin> {
 
   // Botón de login
   Widget _construirBotonLogin() {
-    return SizedBox(
+    return Container(
       width: double.infinity,
-      height: 50,
+      height: 54,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: AppTheme.primario.withAlpha(50),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
       child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          elevation: 0, // Quitamos la elevación por defecto para usar la sombra manual
+        ),
         onPressed: _intentarLogin,
-        child: const Text('Iniciar Sesión'),
+        child: const Text(
+          'INICIAR SESIÓN',
+          style: TextStyle(letterSpacing: 1.2),
+        ),
       ),
     );
   }
@@ -124,37 +152,49 @@ class _PantallaLoginState extends State<PantallaLogin> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppTheme.fondo,
+      backgroundColor: AppTheme.fondoInput, // Fondo gris muy clarito para el Scaffold
       body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 32),
-          // Usamos un Form para englobar nuestros campos y poder validarlos
-          child: Form(
-            key: _formKey,
+        child: Center(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 24),
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const SizedBox(height: 60),
-
                 _construirCabecera(),
-
-                const SizedBox(height: 40),
-
-                _construirCampoEmail(),
-
-                const SizedBox(height: 16),
-
-                _construirCampoPassword(),
-
                 const SizedBox(height: 32),
 
-                _construirBotonLogin(),
+                
+                Container(
+                  padding: const EdgeInsets.all(24),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(24),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withAlpha(10), // con Alpha en vez de opacity para evitar warnings
+                        blurRadius: 20,
+                        offset: const Offset(0, 10),
+                      ),
+                    ],
+                  ),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      children: [
+                        _construirCampoEmail(),
+                        const SizedBox(height: 20),
+                        _construirCampoPassword(),
+                        const SizedBox(height: 32),
+                        _construirBotonLogin(),
+                      ],
+                    ),
+                  ),
+                ),
 
-                const SizedBox(height: 16),
+                const SizedBox(height: 24),
 
                 TextButton(
                   onPressed: () {
-                    // Nota: Aquí se está navegando a RegisterScreen desde pantalla_registro.dart
-                    // Se podría renombrar la clase RegisterScreen a PantallaRegistro en el futuro para consistencia total.
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (_) => const RegisterScreen()),

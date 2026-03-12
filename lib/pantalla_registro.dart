@@ -11,9 +11,8 @@ class RegisterScreen extends StatefulWidget {
 class _RegisterScreenState extends State<RegisterScreen> {
   final llaveDelFormulario = GlobalKey<FormState>();
 
-  String? queSoy;
-  bool estoyPensando = false;
-  bool ocultarSecretos = true;
+  String? tipoEntidad;
+  bool ocultarContrasena = true;
 
   final nombreCtrl = TextEditingController();
   final cifCtrl = TextEditingController();
@@ -41,9 +40,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppTheme.fondo,
+      backgroundColor: AppTheme.fondoInput,
       appBar: AppBar(
-        backgroundColor: AppTheme.fondo,
+        backgroundColor: AppTheme.fondoInput,
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: AppTheme.textoPrincipal),
@@ -61,54 +60,69 @@ class _RegisterScreenState extends State<RegisterScreen> {
       body: Form(
         key: llaveDelFormulario,
         child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 16),
+          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               const Text(
                 'Tu solicitud será revisada manualmente antes de activar el acceso.',
                 style: TextStyle(fontSize: 14, color: AppTheme.textoSecundario),
+                textAlign: TextAlign.center,
               ),
               const SizedBox(height: 32),
 
-              const Text(
-                'Tipo de entidad',
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                  color: AppTheme.textoPrincipal,
+              Container(
+                padding: const EdgeInsets.all(24),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(24),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withAlpha(10),
+                      blurRadius: 20,
+                      offset: const Offset(0, 10),
+                    ),
+                  ],
                 ),
-              ),
-              const SizedBox(height: 12),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Tipo de entidad',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: AppTheme.textoPrincipal,
+                      ),
+                    ),
+                    const SizedBox(height: 12),
 
-              // Botones de selección
-              Row(
-                children: [
-                  _botonOpcion('Clínica', Icons.local_hospital_outlined),
-                  const SizedBox(width: 12),
-                  _botonOpcion('Laboratorio', Icons.science_outlined),
-                ],
-              ),
-              const SizedBox(height: 32),
+                    // Botones de selección
+                    Row(
+                      children: [
+                        _botonOpcion('Clínica', Icons.local_hospital_outlined),
+                        const SizedBox(width: 12),
+                        _botonOpcion('Laboratorio', Icons.science_outlined),
+                      ],
+                    ),
+                    const SizedBox(height: 32),
 
-              if (queSoy != null) ...[
-                
-                TextFormField(
-                  controller: nombreCtrl,
-                  textInputAction:
-                      TextInputAction.next, 
-                  decoration: InputDecoration(
-                    labelText: queSoy == 'Clínica'
-                        ? 'Nombre de la clínica'
-                        : 'Nombre del laboratorio',
-                    prefixIcon: const Icon(Icons.business_outlined),
-                  ),
-                  validator: (valor) {
-                    if (valor == null || valor.isEmpty)
-                      return '¡Falta el nombre!';
-                    return null;
-                  },
-                ),
+                    if (tipoEntidad != null) ...[
+                      TextFormField(
+                        controller: nombreCtrl,
+                        textInputAction: TextInputAction.next,
+                        decoration: InputDecoration(
+                          labelText: tipoEntidad == 'Clínica'
+                              ? 'Nombre de la clínica'
+                              : 'Nombre del laboratorio',
+                          prefixIcon: const Icon(Icons.business_outlined),
+                        ),
+                        validator: (valor) {
+                          if (valor == null || valor.isEmpty)
+                            return '¡Falta el nombre!';
+                          return null;
+                        },
+                      ),
                 const SizedBox(height: 16),
 
                 TextFormField(
@@ -169,7 +183,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   controller: respCtrl,
                   textInputAction: TextInputAction.next,
                   decoration: InputDecoration(
-                    labelText: queSoy == 'Clínica'
+                    labelText: tipoEntidad == 'Clínica'
                         ? 'Responsable'
                         : 'Técnico responsable',
                     prefixIcon: const Icon(Icons.person_outlined),
@@ -182,19 +196,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 // Contraseña con ojito para ver
                 TextFormField(
                   controller: passCtrl,
-                  obscureText: ocultarSecretos,
+                  obscureText: ocultarContrasena,
                   textInputAction: TextInputAction.next,
                   decoration: InputDecoration(
                     labelText: 'Contraseña',
                     prefixIcon: const Icon(Icons.lock_outline),
                     suffixIcon: IconButton(
                       icon: Icon(
-                        ocultarSecretos
+                        ocultarContrasena
                             ? Icons.visibility_outlined
                             : Icons.visibility_off_outlined,
                       ),
                       onPressed: () {
-                        setState(() => ocultarSecretos = !ocultarSecretos);
+                        setState(() => ocultarContrasena = !ocultarContrasena);
                       },
                     ),
                   ),
@@ -206,7 +220,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                 TextFormField(
                   controller: passRepetirCtrl,
-                  obscureText: ocultarSecretos,
+                  obscureText: ocultarContrasena,
                   textInputAction: TextInputAction.done, // Botón "Hecho"
                   decoration: const InputDecoration(
                     labelText: 'Confirmar contraseña',
@@ -238,21 +252,37 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                 const SizedBox(height: 24),
 
-                ElevatedButton(
-                  onPressed: estoyPensando ? null : lanzarCohete,
-                  child: estoyPensando
-                      ? const SizedBox(
-                          height: 20,
-                          width: 20,
-                          child: CircularProgressIndicator(
-                            color: Colors.white,
-                            strokeWidth: 2,
-                          ),
-                        )
-                      : const Text('Enviar Solicitud'),
+                const SizedBox(height: 24),
+
+                Container(
+                  width: double.infinity,
+                  height: 54,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    boxShadow: [
+                      BoxShadow(
+                        color: AppTheme.primario.withAlpha(50),
+                        blurRadius: 10,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      elevation: 0,
+                    ),
+                    onPressed: _registrarUsuario,
+                    child: const Text(
+                      'ENVIAR SOLICITUD',
+                      style: TextStyle(letterSpacing: 1.2),
+                    ),
+                  ),
                 ),
-                const SizedBox(height: 32),
-              ],
+                const SizedBox(height: 16),
+                    ],
+                  ],
+                ),
+              ),
             ],
           ),
         ),
@@ -262,10 +292,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   // Widget simple para los botones de arriba
   Widget _botonOpcion(String tipo, IconData icono) {
-    final seleccionado = queSoy == tipo;
+    final seleccionado = tipoEntidad == tipo;
     return Expanded(
       child: GestureDetector(
-        onTap: () => setState(() => queSoy = tipo),
+        onTap: () => setState(() => tipoEntidad = tipo),
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 16),
           decoration: BoxDecoration(
@@ -297,24 +327,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  void lanzarCohete() {
-    // 1. Preguntamos a la llave maestra si todo está OK
+  void _registrarUsuario() {
     if (llaveDelFormulario.currentState!.validate()) {
-      // 2. Si está OK, empezamos a cargar
-      setState(() => estoyPensando = true);
-
-      // Simulación de envío
-      Future.delayed(const Duration(seconds: 2), () {
-        if (!mounted) return; 
-        setState(() => estoyPensando = false);
-
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('¡Listo! Solicitud enviada.'),
-            backgroundColor: AppTheme.primario,
-          ),
-        );
-      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Formulario válido. Listo para conectar al backend.'),
+          backgroundColor: Colors.green,
+        ),
+      );
     }
   }
 }
